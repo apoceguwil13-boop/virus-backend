@@ -5,6 +5,22 @@ const app = express();
 app.use(express.json());
 app.use(cors({origin: true}));
 
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "server.js"
+    }
+  ]
+}
+
 const { MongoClient } = require('mongodb');
 const uri = process.env.MONGODB_URI;  // ← Vercel добавил!
 let db;
