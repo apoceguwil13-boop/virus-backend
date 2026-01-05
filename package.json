@@ -1,14 +1,6 @@
 {
   "name": "virus-backend",
   "version": "1.0.0",
-  "dependencies": {
-    "express": "^4.18.0",
-    "cors": "^2.8.5"
-  },
-  "scripts": {
-    "start": "node server.js"
-  },
-  "engines": {
-    "node": "20.x"
-  }
+  "dependencies": {},
+  "engines": {"node": "20.x"}
 }
