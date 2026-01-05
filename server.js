@@ -5,7 +5,31 @@ const app = express();
 app.use(express.json());
 app.use(cors({origin: true}));
 
-let users = {}; // Простая БД: hash -> {tokens, health, infected}
+const { MongoClient } = require('mongodb');
+const uri = process.env.MONGODB_URI;  // ← Vercel добавил!
+let db;
+
+MongoClient.connect(uri).then(client => {
+    db = client.db('virusdb');
+    console.log('MongoDB ready!');
+});
+
+app.post('/api/tap', async (req, res) => {
+    const hash = getUserHash(req.body.initData);
+    const user = await db.collection('users').findOneAndUpdate(
+        { hash },
+        { 
+            $inc: { tokens: Math.floor(Math.random()*5)+1 },
+            $set: { 
+                health: Math.max(0, Math.min(100, (await db.collection('users').findOne({hash}))?.health - 5 || 95)),
+                infected: Math.random() < 0.1,
+                updated_at: new Date()
+            }
+        },
+        { upsert: true, returnDocument: 'after' }
+    );
+    res.json(user.value);
+});
 
 function getUserHash(initData) {
     return initData.split('&')[0]; // Упрощённо, в проде используйте crypto
