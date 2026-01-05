@@ -1,0 +1,7 @@
+{
+  "name": "virus-backend",
+  "version": "1.0.0",
+  "dependencies": {},
+  "engines": {"node": "20.x"}
+}
+
